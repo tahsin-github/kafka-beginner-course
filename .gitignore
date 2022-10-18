@@ -1,2 +1,3 @@
-KafkaServer.properties
+kafka-basics/target/KafkaServer.properties
 .idea
+kafka-basics/src/main/java/tahsin/properties/KafkaServer.properties

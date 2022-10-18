@@ -18,7 +18,7 @@ public class ProducerDemoWithCallback {
 
         // Read the Kafka Server's ip address from the properties file
         Properties kafkaServerIPProperties = new Properties();
-        InputStream is = new FileInputStream("KafkaServer.properties");
+        InputStream is = new FileInputStream("kafka-basics/src/main/java/tahsin/properties/KafkaServer.properties");
         kafkaServerIPProperties.load(is);
 
         // Create Kafka Producer Properties
@@ -33,36 +33,46 @@ public class ProducerDemoWithCallback {
 
         // Create a message/producer record
 
-        final String topic = "transections";
+        final String topic = "transactions";
 
-        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, "2", "1000");
+
 
         // Send the record : Asynchronously
 
-        producer.send(producerRecord, new Callback() {
-            @Override
-            public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                if(e == null){
-                    log.info("Received new metadata : \n" +
-                            "Topic : " + recordMetadata.topic() + "\n" +
-                            "Partition : " + recordMetadata.partition() + "\n" +
-                            "Offset : " + recordMetadata.offset() + "\n" +
-                            "Timestamp : " + recordMetadata.timestamp() + ";"
-                    );
+
+        while (true){
+            // Generate a fake message
+            FakeMessageGenerator messageGenerator = new FakeMessageGenerator();
+            String key = messageGenerator.getRandomIntString();
+            String message = messageGenerator.getFakeInformation();
+
+            ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, message);
+            producer.send(producerRecord, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+                    if(e == null){
+                        log.info("Received new metadata : \n" +
+                                "Topic : " + recordMetadata.topic() + "\n" +
+                                "Partition : " + recordMetadata.partition() + "\n" +
+                                "Offset : " + recordMetadata.offset() + "\n" +
+                                "Timestamp : " + recordMetadata.timestamp() + ";"
+                        );
+                    }
+                    else {
+                        log.info("Error While Producing Message " + e);
+                    }
                 }
-                else {
-                    log.info("Error While Producing Message " + e);
-                }
-            }
-        });
+            });
 
-        // flush the record : Synchronous
+            // flush the record : Synchronous
 
-        producer.flush();
+            producer.flush();
 
-        // close the record
+        }
 
-        producer.close();
+
+
+
 
 
 

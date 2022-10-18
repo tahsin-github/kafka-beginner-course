@@ -20,7 +20,7 @@ public class ProducerDemo {
 
         // Read the Kafka Server's ip address from the properties file
         Properties kafkaServerIPProperties = new Properties();
-        InputStream is = new FileInputStream("KafkaServer.properties");
+        InputStream is = new FileInputStream("kafka-basics/src/main/java/tahsin/properties/KafkaServer.properties");
         kafkaServerIPProperties.load(is);
 
         // Create Kafka Producer Properties
