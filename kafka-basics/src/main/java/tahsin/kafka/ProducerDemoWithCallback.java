@@ -55,7 +55,8 @@ public class ProducerDemoWithCallback {
                                 "Topic : " + recordMetadata.topic() + "\n" +
                                 "Partition : " + recordMetadata.partition() + "\n" +
                                 "Offset : " + recordMetadata.offset() + "\n" +
-                                "Timestamp : " + recordMetadata.timestamp() + ";"
+                                "Timestamp : " + recordMetadata.timestamp() + "\n" +
+                                "Key : " + key + " ; "
                         );
                     }
                     else {
